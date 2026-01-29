@@ -14,7 +14,7 @@ class UsersController extends AppController {
         parent::beforeFilter();
         // Permite login e logout sempre
         $this->Auth->allow('login', 'logout');
-
+        //$this->Auth->allow('add');
         // Permite temporariamente acessar initDB
         // Depois de rodar, comente ou remova esta linha
         //$this->Auth->allow('initDB');
@@ -100,19 +100,14 @@ class UsersController extends AppController {
      * Login user
      */
     public function login() {
-        // Se já estiver logado, redireciona
-        if ($this->Session->check('Auth.User')) {
-            $this->Session->setFlash('You are logged in!');
-            return $this->redirect('/');
+    if ($this->request->is('post')) {
+        if ($this->Auth->login()) {
+            return $this->redirect($this->Auth->redirect());
         }
-
-        if ($this->request->is('post')) {
-            if ($this->Auth->login()) {
-                return $this->redirect($this->Auth->redirectUrl());
-            }
-            $this->Session->setFlash(__('Usuário ou senha inválidos.'));
-        }
+        $this->Session->setFlash('Usuário ou senha inválidos');
     }
+}
+
 
     /**
      * Logout user
@@ -130,17 +125,17 @@ class UsersController extends AppController {
         $group = $this->User->Group;
 
         // Permissão total para admins
-        $group->id = 4;
+        $group->id = 1;
         $this->Acl->allow($group, 'controllers');
 
         // Permissões para managers
-        $group->id = 3;
+        $group->id = 2;
         $this->Acl->deny($group, 'controllers');
         $this->Acl->allow($group, 'controllers/Posts');
         $this->Acl->allow($group, 'controllers/Widgets');
 
         // Permissões limitadas para users
-        $group->id = 2;
+        $group->id = 3;
         $this->Acl->deny($group, 'controllers');
         $this->Acl->allow($group, 'controllers/Posts/add');
         $this->Acl->allow($group, 'controllers/Posts/edit');
@@ -152,6 +147,6 @@ class UsersController extends AppController {
 
         echo "all done";
         exit;
-    }
-    */
+    }*/
+    
 }
