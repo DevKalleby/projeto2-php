@@ -15,7 +15,7 @@ class PostsController extends AppController {
  */
 		public function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allow('index', 'view'); // torna index e view públicas
+		$this->Auth->allow('index', 'view', 'edit', 'delete'); // torna index e view públicas
 	}
 
 	public $components = array('Paginator');
@@ -71,7 +71,7 @@ class PostsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	/*public function edit($id = null) {
 		if (!$this->Post->exists($id)) {
 			throw new NotFoundException(__('Invalid post'));
 		}
@@ -88,7 +88,35 @@ class PostsController extends AppController {
 		}
 		$users = $this->Post->User->find('list');
 		$this->set(compact('users'));
-	}
+	}*/
+
+	public function edit($id = null) {
+    
+	if (!$id) {
+        throw new NotFoundException(__('Invalid post'));
+    }
+
+    $post = $this->Post->findById($id);
+    if (!$post) {
+        throw new NotFoundException(__('Invalid post'));
+    }
+
+    if ($this->request->is(array('post', 'put'))) {
+        $this->Post->id = $id;
+        if ($this->Post->save($this->request->data)) {
+            $this->Flash->success(__('Your post has been updated.'));
+            return $this->redirect(array('action' => 'index'));
+        }
+        $this->Flash->error(__('Unable to update your post.'));
+    }
+
+    if (!$this->request->data) {
+        $this->request->data = $post;
+    }
+	$users = $this->Post->User->find('list');
+$this->set(compact('users'));
+
+}
 
 /**
  * delete method
@@ -98,15 +126,22 @@ class PostsController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
-		if (!$this->Post->exists($id)) {
-			throw new NotFoundException(__('Invalid post'));
-		}
-		$this->request->allowMethod('post', 'delete');
-		if ($this->Post->delete($id)) {
-			$this->Flash->success(__('The post has been deleted.'));
-		} else {
-			$this->Flash->error(__('The post could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
-	}
+
+    if (!$this->request->is('post')) {
+        throw new MethodNotAllowedException();
+    }
+
+    if (!$this->Post->exists($id)) {
+        throw new NotFoundException(__('Post inválido'));
+    }
+
+    if ($this->Post->delete($id)) {
+        $this->Flash->success(__('Post deletado com sucesso.'));
+    } else {
+        $this->Flash->error(__('Não foi possível deletar o post.'));
+    }
+
+    return $this->redirect(array('action' => 'index'));
+}
+
 }
