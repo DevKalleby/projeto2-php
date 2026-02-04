@@ -82,7 +82,7 @@
             ?>
 
             <?php
-            echo $this->Form->postLink(
+            echo $this->Form->Link(
     'Deletar',
     array('action' => 'delete', $this->request->data['Post']['id']),
     array(
@@ -98,4 +98,4 @@
     </div>
 
 </div>
-<?php debug($this->Form->value('Post.id')); ?>
+

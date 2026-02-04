@@ -32,10 +32,12 @@
 
             <div class="w-full md:w-1/2">
                 <?php
-                    echo $this->Form->input('group_id', array(
-                        'label' => 'Nível de Permissão (Grupo)',
-                        'class' => 'w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer'
-                    ));
+                    echo $this->Form->input('group_id', [
+    'label' => 'Grupo',
+    'options' => $groups,
+    'empty' => 'Selecione um grupo',
+    'class' => 'w-full px-4 py-3 rounded-xl border border-gray-300'
+]);
                 ?>
             </div>
 

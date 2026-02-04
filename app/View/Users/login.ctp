@@ -4,9 +4,9 @@
         <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Acessar Sistema</h2>
 
         <?php
-        // Iniciamos o formulário definindo classes para o espaçamento vertical entre campos
         echo $this->Form->create('User', array(
-            'class' => 'space-y-5'
+        'class' => 'space-y-5',
+        'id' => 'login-form'
         ));
 
         // Estilizando o campo de Usuário
