@@ -8,7 +8,7 @@ class GroupsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         // Exemplo: permitir acesso público apenas a index e view
-        $this->Auth->allow('index', 'view');
+        $this->Auth->allow( 'view');
     }
 
     public function index() {

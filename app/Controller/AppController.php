@@ -19,7 +19,8 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         // Permite acesso público a login e display
-        $this->Auth->allow('login', 'display');
+        $this->Auth->allow('login', 'display', 'logout');
+        $this->Auth->deny();
 
         // Se a requisição for AJAX, usar layout ajax
         if ($this->request->is('ajax')) {
